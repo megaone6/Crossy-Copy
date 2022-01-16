@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DisplayScore : MonoBehaviour
 {
@@ -16,6 +18,12 @@ public class DisplayScore : MonoBehaviour
 
     public void GameOver(int score)
     {
-        txt.text = "Score: " + score.ToString() + "\nGame over!";
+        txt.text = "Score: " + score.ToString() + "\nGame over! Back to menu in 5 seconds...";
+        Invoke("BackToMenu", 5);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }
