@@ -7,6 +7,7 @@ public class LevelGenerator : MonoBehaviour
     private Vector3 obstaclePos;
     private List<GameObject> currentTerrainList;
     private GameObject currentObject;
+    private bool generateWater;
 
     [SerializeField] private List<GameObject> levelObjects;
     [SerializeField] private List<GameObject> obstacles;
@@ -18,12 +19,15 @@ public class LevelGenerator : MonoBehaviour
     {
         currentTerrainList = new List<GameObject>();
         currentPos = new Vector3(-12, 0, 0);
+        generateWater = false;
         for (int i = 0; i < 16; i++)
         {
             GenerateGrassOnly();
         }
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 30; i++)
         {
+            if (i == 8)
+                generateWater = true;
             GenerateLevel();
         }
     }
@@ -31,13 +35,15 @@ public class LevelGenerator : MonoBehaviour
     public void GenerateLevel()
     {
         GameObject currentTerrainObject;
-        while (currentTerrain == previousTerrain)
+        while (currentTerrain == previousTerrain || currentTerrain == 3 || (!generateWater && currentTerrain == 2))
             currentTerrain = Random.Range(0, levelObjects.Count);
         int terrainLoop = Random.Range(1, 6);
         if (currentTerrain == 2 && currentPos.y == 0)
             currentPos.y = -0.4f;
         for (int i = 0; i < terrainLoop; i++)
         {
+            if (currentTerrain == 2 && generateWater && Random.Range(0, 4) == 1)
+                currentTerrain = 3;
             currentTerrainObject = Instantiate(levelObjects[currentTerrain], currentPos, Quaternion.identity);
             currentTerrainList.Add(currentTerrainObject);
             if (currentTerrain == 0)
@@ -45,26 +51,26 @@ public class LevelGenerator : MonoBehaviour
                 obstaclePos = new Vector3(currentPos.x + 0.25f, currentPos.y, -49);
                 while (obstaclePos.z < 49)
                 {
-                    if(Random.Range(0,8) == 0)
+                    if (Random.Range(0, 8) == 0)
                     {
                         Instantiate(obstacles[0], obstaclePos, Quaternion.identity).transform.parent = currentTerrainObject.transform;
                     }
                     obstaclePos.z++;
-                }    
+                }
             }
             else if (currentTerrain == 2)
             {
-                obstaclePos = new Vector3(currentPos.x, currentPos.y + 0.6f, -49);
+                obstaclePos = new Vector3(currentPos.x, currentPos.y + 0.53f, -49);
                 while (obstaclePos.z < 49)
                 {
-                    if (Random.Range(0, 5) == 0 || ((obstaclePos.z > 0 && obstaclePos.z < 8) && Random.Range(0, 2) == 0))
+                    if (Random.Range(0, 3) == 0)
                     {
                         Instantiate(obstacles[1], obstaclePos, Quaternion.identity).transform.parent = currentTerrainObject.transform;
                     }
                     obstaclePos.z++;
                 }
             }
-            else if (currentTerrain == 3)
+            else if (currentTerrain == 4)
             {
                 obstaclePos = new Vector3(currentPos.x, currentPos.y + 0.25f, -49);
                 while (obstaclePos.z < 49)
@@ -78,6 +84,8 @@ public class LevelGenerator : MonoBehaviour
             }
             currentPos.x++;
             obstaclePos.x++;
+            if (currentTerrain == 3)
+                currentTerrain = 2;
         }
         if (currentTerrain == 2 && currentPos.y == -0.4f)
             currentPos.y = 0;
@@ -96,6 +104,6 @@ public class LevelGenerator : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
             Destroy(currentTerrainList[i]);
-        currentTerrainList.RemoveRange(0,2);
+        currentTerrainList.RemoveRange(0, 2);
     }
 }

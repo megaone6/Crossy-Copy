@@ -88,7 +88,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &-5462215249322995921
 BoxCollider:
@@ -103,6 +103,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: -0.35, y: 0.5, z: 0.3}
+--- !u!114 &-4006110559672043422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7300016848195796027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b05ab05d4918b874096bcd0bb411e019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultSpeed: 5.500001
+  speedDifference: 0
 --- !u!114 &-3323772113551440816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,18 +131,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayScore: {fileID: 0}
   playerScript: {fileID: 0}
---- !u!114 &3348676857223142066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7300016848195796027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05ab05d4918b874096bcd0bb411e019, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  minSpeedDifference: 0.7
-  maxSpeedDifference: 1.3

@@ -7,11 +7,12 @@ public class PlayerScript : MonoBehaviour
 
 	private Animator animator;
 	private Rigidbody rb;
-	private Vector3 posTmp;
+	public Vector3 posTmp;
 	private Vector2 startPos;
 	private float startTime;
 	private int currentPos;
 	private int direction;
+	private bool exitLog;
 
 	public int score;
 
@@ -24,6 +25,7 @@ public class PlayerScript : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
+		exitLog = false;
     }
 
     // Update is called once per frame
@@ -107,7 +109,8 @@ public class PlayerScript : MonoBehaviour
 				else
 				{
 					if (swipe.y > 0)
-					{		
+					{
+						gameObject.transform.parent = null;
 						MovePlayer("vert", 1);
 						if (score == currentPos)
 						{
@@ -147,12 +150,20 @@ public class PlayerScript : MonoBehaviour
 			camMove.SetDeath();
 			displayScore.GameOver(score);
 		}
-			
+		if (collision.gameObject.name.Contains("LogLeft"))
+		{
+			exitLog = true;
+			camMove.followOnLog = "left";
+		}
+		else if (collision.gameObject.name.Contains("LogRight"))
+        {
+			exitLog = true;
+			camMove.followOnLog = "right";
+		}
 	}
 
 	private void MovePlayer(string alignment, int translate)
     {
-		animator.SetTrigger("move");
 		if (alignment == "hor")
         {
 			Vector3 tmp = new Vector3(0, 0, translate);
@@ -162,10 +173,29 @@ public class PlayerScript : MonoBehaviour
 		}
 		else if (alignment == "vert")
         {
-			Vector3 tmp = new Vector3(translate, 0, 0);
-			tmp = tmp.normalized;
-			posTmp = transform.position;
-			rb.MovePosition(transform.position + tmp);
+			if (!exitLog)
+            {
+				Vector3 tmp = new Vector3(translate, 0, 0);
+				tmp = tmp.normalized;
+				posTmp = transform.position;
+				rb.MovePosition(transform.position + tmp);
+			}
+			else
+            {
+				Destroy(gameObject.GetComponent<HingeJoint>());
+				gameObject.GetComponent<Rigidbody>().useGravity = false;
+				gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+				transform.Translate(1, 1, 0);
+				Vector3 tmp = transform.position;
+				tmp.x = Mathf.Round(tmp.x);
+				tmp.y = Mathf.Round(tmp.y);
+				tmp.z = Mathf.Round(tmp.z);
+				transform.position = tmp;
+				exitLog = false;
+				gameObject.GetComponent<Rigidbody>().useGravity = true;
+				camMove.followOnLog = "none";
+			}
 		}
-    }
+		animator.SetTrigger("move");
+	}
 }

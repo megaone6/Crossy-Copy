@@ -25,15 +25,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5b6eb9b5d3687b459887ea59dac3305, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 41.740425
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5b6eb9b5d3687b459887ea59dac3305, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 165.25294
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5b6eb9b5d3687b459887ea59dac3305, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 129.0026
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a5b6eb9b5d3687b459887ea59dac3305, type: 3}
       propertyPath: m_LocalRotation.w
@@ -88,7 +88,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &2180405906681501486
 BoxCollider:
@@ -101,8 +101,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.8, y: 2, z: 1}
-  m_Center: {x: 0.8, y: 1, z: 0}
+  m_Size: {x: 3.8, y: 2, z: 1.7}
+  m_Center: {x: 0.7, y: 1, z: 0.35}
 --- !u!114 &-9065735313308557600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +129,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05ab05d4918b874096bcd0bb411e019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  minSpeedDifference: 0.7
-  maxSpeedDifference: 1.3
+  defaultSpeed: 3.6999998
+  speedDifference: 0
