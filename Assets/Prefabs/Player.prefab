@@ -80,6 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 035061317efa4104187159d04439e92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  posTmp: {x: 0, y: 0, z: 0}
+  score: 0
   levelGen: {fileID: 0}
   camMove: {fileID: 0}
   displayScore: {fileID: 0}

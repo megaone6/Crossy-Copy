@@ -49,9 +49,17 @@ public class MovingObjectBehaviour : MonoBehaviour
 
     private void OnCollisionEnter(Collision coll)
     {
-        if (coll.gameObject.name.Contains("Player") && gameObject.name.Contains("Log"))
+        string objectName = coll.gameObject.name;
+        float difference;
+        if ((objectName == "Player" || objectName == "Chicken" || objectName == "Cat" || objectName == "Dog") && gameObject.name.Contains("Log"))
         {
-            coll.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0.3f,0);
+            if (objectName == "Player")
+                difference = 0.3f;
+            else if (objectName == "Chicken" || objectName == "Cat")
+                difference = 0.1f;
+            else
+                difference = 0.05f;
+            coll.gameObject.transform.position = gameObject.transform.position + new Vector3(0,difference,0); //player: 0.3f, chicken: 0.1f, dog: 0.05f
             tempHinge = coll.gameObject.AddComponent<HingeJoint>();
             tempHinge.connectedBody = gameObject.GetComponent<Rigidbody>();
         }
@@ -64,10 +72,9 @@ public class MovingObjectBehaviour : MonoBehaviour
 
     private void OnCollisionExit(Collider other)
     {
-        if (other.gameObject.name.Contains("Player") && gameObject.name.Contains("Log"))
+        if ((other.gameObject.name.Contains("Player") || other.gameObject.name.Contains("Chicken") || other.gameObject.name.Contains("Cat") || other.gameObject.name.Contains("Dog")) && gameObject.name.Contains("Log"))
         {
             Destroy(other.gameObject.GetComponent<HingeJoint>());
-        }
-            
+        }     
     }
 }

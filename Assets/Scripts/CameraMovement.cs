@@ -12,7 +12,7 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         restorePosition = transform.position;
-        delay = 2;
+        delay = 3;
         timestamp = Time.realtimeSinceStartup + delay;
         followOnLog = "none";
     }

@@ -6,7 +6,6 @@ public class LevelGenerator : MonoBehaviour
     public Vector3 currentPos;
     private Vector3 obstaclePos;
     private List<GameObject> currentTerrainList;
-    private GameObject currentObject;
     private bool generateWater;
 
     [SerializeField] private List<GameObject> levelObjects;
@@ -42,7 +41,7 @@ public class LevelGenerator : MonoBehaviour
             currentPos.y = -0.4f;
         for (int i = 0; i < terrainLoop; i++)
         {
-            if (currentTerrain == 2 && generateWater && Random.Range(0, 4) == 1)
+            if (currentTerrain == 2 && generateWater && Random.Range(0, 4) == 0) //(0,4)
                 currentTerrain = 3;
             currentTerrainObject = Instantiate(levelObjects[currentTerrain], currentPos, Quaternion.identity);
             currentTerrainList.Add(currentTerrainObject);
@@ -64,7 +63,7 @@ public class LevelGenerator : MonoBehaviour
                 obstaclePos = new Vector3(currentPos.x, currentPos.y + 0.53f, -49);
                 while (obstaclePos.z < 49)
                 {
-                    if (Random.Range(0, 3) == 0)
+                    if (Random.Range(0, 2) == 0)
                     {
                         Instantiate(obstacles[1], obstaclePos, Quaternion.identity).transform.parent = currentTerrainObject.transform;
                     }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -17,6 +19,8 @@ public class PlayerScript : MonoBehaviour
 	private int coins;
 	private SaveObject savedObject;
 	private SaveObject loadedObject;
+	private SelectedCharacter selectedChar;
+	private bool asd; //temporary
 
 	public int score;
 
@@ -25,8 +29,14 @@ public class PlayerScript : MonoBehaviour
 	[SerializeField] public DisplayScore displayScore;
 
 	// Start is called before the first frame update
-	void Start()
+	private void Start()
     {
+		asd = false;
+		selectedChar = loadCharacter();
+		if (gameObject.name != selectedChar.name)
+        {
+			Destroy(gameObject);
+        }
         animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
 		exitLog = false;
@@ -35,8 +45,13 @@ public class PlayerScript : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+		if(!asd)
+        {
+			rb.constraints = RigidbodyConstraints.FreezeRotation;
+			asd = true;
+		}
 		if (!GetComponent<Renderer>().isVisible && camMove.timestamp < Time.realtimeSinceStartup)
         {
 			saveCoins();
@@ -172,7 +187,6 @@ public class PlayerScript : MonoBehaviour
 		{
 			Destroy(collision.gameObject);
 			coins++;
-			Debug.Log(coins);
 		}
 	}
 
@@ -199,7 +213,10 @@ public class PlayerScript : MonoBehaviour
 				Destroy(gameObject.GetComponent<HingeJoint>());
 				gameObject.GetComponent<Rigidbody>().useGravity = false;
 				gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
-				transform.Translate(1, 1, 0);
+				if (gameObject.name == "Player")
+					transform.Translate(1, 1, 0);
+				else
+					transform.Translate(0, 1, 1);
 				Vector3 tmp = transform.position;
 				tmp.x = Mathf.Round(tmp.x);
 				tmp.y = Mathf.Round(tmp.y);
@@ -238,8 +255,20 @@ public class PlayerScript : MonoBehaviour
         }
 	}
 
+	private SelectedCharacter loadCharacter()
+	{
+		string characterString = File.ReadAllText(Application.persistentDataPath + "/selectedCharacter.json");
+		return JsonUtility.FromJson<SelectedCharacter>(characterString);
+	}
+
 	private class SaveObject
     {
 		public int coinAmount;
     }
+
+	private class SelectedCharacter
+	{
+		public int id;
+		public String name;
+	}
 }

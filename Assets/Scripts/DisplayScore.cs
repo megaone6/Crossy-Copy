@@ -19,7 +19,7 @@ public class DisplayScore : MonoBehaviour
     public void GameOver(int score)
     {
         txt.text = "Score: " + score.ToString() + "\nGame over! Back to menu in 5 seconds...";
-        Invoke("BackToMenu", 5);
+        Invoke("BackToMenu", 0.1f);
     }
 
     public void BackToMenu()
