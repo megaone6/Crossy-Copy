@@ -13,7 +13,7 @@ public class MovingObjectBehaviour : MonoBehaviour
     private void Start()
     {
         minSpeedDifference = 0.8f;
-        maxSpeedDifference = 1.6f;
+        maxSpeedDifference = 1.2f;
         rb = GetComponent<Rigidbody>();
         rb.velocity = new Vector3(1, 0, 0);
         if (!gameObject.name.Contains("Log"))

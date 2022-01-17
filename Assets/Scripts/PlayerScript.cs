@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -13,6 +14,9 @@ public class PlayerScript : MonoBehaviour
 	private int currentPos;
 	private int direction;
 	private bool exitLog;
+	private int coins;
+	private SaveObject savedObject;
+	private SaveObject loadedObject;
 
 	public int score;
 
@@ -26,13 +30,16 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
 		exitLog = false;
-    }
+		loadedObject = loadCoins();
+		coins = loadedObject.coinAmount;
+	}
 
     // Update is called once per frame
     void Update()
     {
 		if (!GetComponent<Renderer>().isVisible && camMove.timestamp < Time.realtimeSinceStartup)
         {
+			saveCoins();
 			displayScore.GameOver(score);
 			camMove.SetDeath();
 			Destroy(gameObject);
@@ -147,6 +154,7 @@ public class PlayerScript : MonoBehaviour
 		}
 		if (collision.collider.GetComponent<KillOnContact>() != null)
         {
+			saveCoins();
 			camMove.SetDeath();
 			displayScore.GameOver(score);
 		}
@@ -159,6 +167,12 @@ public class PlayerScript : MonoBehaviour
         {
 			exitLog = true;
 			camMove.followOnLog = "right";
+		}
+		if (collision.gameObject.name.Contains("Coin"))
+		{
+			Destroy(collision.gameObject);
+			coins++;
+			Debug.Log(coins);
 		}
 	}
 
@@ -198,4 +212,34 @@ public class PlayerScript : MonoBehaviour
 		}
 		animator.SetTrigger("move");
 	}
+
+	private void saveCoins()
+    {
+		savedObject = new SaveObject
+		{
+			coinAmount = coins
+		};
+		string json = JsonUtility.ToJson(savedObject);
+		File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+	}
+
+	private SaveObject loadCoins()
+	{
+		if (File.Exists(Application.persistentDataPath + "/save.json"))
+        {
+			string saveString = File.ReadAllText(Application.persistentDataPath + "/save.json");
+			return JsonUtility.FromJson<SaveObject>(saveString);
+        }
+		else
+        {
+			return new SaveObject {
+				coinAmount = 0
+			};
+        }
+	}
+
+	private class SaveObject
+    {
+		public int coinAmount;
+    }
 }

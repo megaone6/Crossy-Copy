@@ -16,8 +16,8 @@ public class MovingObjectSpawner: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentCarSpeed = 2f;
-        currentTruckSpeed = 1.25f;
+        currentCarSpeed = 5f;
+        currentTruckSpeed = 3.15f;
         currentLogSpeed = 3f;
         leftOrRight = Random.Range(0, 2);
         StartCoroutine(SpawnVehicle());
@@ -31,9 +31,9 @@ public class MovingObjectSpawner: MonoBehaviour
         while(true)
         {
             if (!waterOrRoad)
-                yield return new WaitForSeconds(Random.Range(4f, 6.7f));
+                yield return new WaitForSeconds(Random.Range(6f, 9.5f));
             else
-                yield return new WaitForSeconds(Random.Range(1.5f, 3f));
+                yield return new WaitForSeconds(Random.Range(3f, 4.5f));
             GameObject movingObj = movingObjs[leftOrRight];
             if (leftOrRight == 0)
             {
@@ -68,7 +68,7 @@ public class MovingObjectSpawner: MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(12f);
             currentCarSpeed += 0.3f;
             currentTruckSpeed += 0.3f;
         }

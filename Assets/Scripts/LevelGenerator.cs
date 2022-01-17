@@ -55,6 +55,7 @@ public class LevelGenerator : MonoBehaviour
                     {
                         Instantiate(obstacles[0], obstaclePos, Quaternion.identity).transform.parent = currentTerrainObject.transform;
                     }
+                    GenerateCoin(obstacles[3], obstaclePos, currentTerrainObject);
                     obstaclePos.z++;
                 }
             }
@@ -72,13 +73,14 @@ public class LevelGenerator : MonoBehaviour
             }
             else if (currentTerrain == 4)
             {
-                obstaclePos = new Vector3(currentPos.x, currentPos.y + 0.25f, -49);
+                obstaclePos = new Vector3(currentPos.x, currentPos.y, -49);
                 while (obstaclePos.z < 49)
                 {
                     if (Random.Range(0, 8) == 0)
                     {
                         Instantiate(obstacles[2], obstaclePos, Quaternion.identity).transform.parent = currentTerrainObject.transform;
                     }
+                    GenerateCoin(obstacles[3], obstaclePos, currentTerrainObject);
                     obstaclePos.z++;
                 }
             }
@@ -98,6 +100,22 @@ public class LevelGenerator : MonoBehaviour
         currentPos.x++;
         previousTerrain = 0;
         currentTerrain = 0;
+    }
+
+    private void GenerateCoin(GameObject coin, Vector3 pos, GameObject terrain)
+    {
+        if (Random.Range(0,80) == 1)
+        {
+            pos.y += 0.65f;
+            pos.x += 0.35f;
+            Collider[] intersecting = Physics.OverlapSphere(pos, 0.01f);
+            if (intersecting.Length == 0)
+            {
+                Instantiate(coin, pos, coin.transform.rotation).transform.parent = terrain.transform;
+            }
+            pos.y -= 0.65f;
+            pos.x -= 0.35f;
+        }
     }
 
     public void DestroyTerrain()
