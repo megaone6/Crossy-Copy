@@ -42,6 +42,7 @@ public class PlayerScript : MonoBehaviour
 		exitLog = false;
 		loadedObject = loadCoins();
 		coins = loadedObject.coinAmount;
+		Debug.Log(Math.Abs(camMove.transform.position.x - transform.position.x));
 	}
 
     // Update is called once per frame
@@ -84,7 +85,7 @@ public class PlayerScript : MonoBehaviour
 					levelGen.DestroyTerrain();
 				}
 				direction = 2;
-				camMove.FollowPlayerForward();
+				camMove.FollowPlayerForward(Math.Abs(camMove.transform.position.x - transform.position.x));
 			}
 			currentPos += 1;
 		}
@@ -144,7 +145,7 @@ public class PlayerScript : MonoBehaviour
 								levelGen.DestroyTerrain();
 							}
 							direction = 2;
-							camMove.FollowPlayerForward();
+							camMove.FollowPlayerForward(Math.Abs(camMove.transform.position.x - transform.position.x));
 						}
 						currentPos += 1;
 					}
@@ -227,6 +228,7 @@ public class PlayerScript : MonoBehaviour
 				camMove.followOnLog = "none";
 			}
 		}
+		Debug.Log(Math.Abs(camMove.transform.position.x - transform.position.x));
 		animator.SetTrigger("move");
 	}
 

@@ -33,7 +33,7 @@ public class MovingObjectSpawner: MonoBehaviour
             if (!waterOrRoad)
                 yield return new WaitForSeconds(Random.Range(6f, 9.5f));
             else
-                yield return new WaitForSeconds(Random.Range(3f, 4.5f));
+                yield return new WaitForSeconds(Random.Range(2.4f, 3.6f));
             GameObject movingObj = movingObjs[leftOrRight];
             if (leftOrRight == 0)
             {
@@ -61,6 +61,10 @@ public class MovingObjectSpawner: MonoBehaviour
                     Instantiate(movingObj, spawnPosLeft.position, movingObj.transform.rotation).transform.parent = gameObject.transform;
                 }
             }
+            if (!waterOrRoad)
+                yield return new WaitForSeconds(Random.Range(6f, 9.5f));
+            else
+                yield return new WaitForSeconds(Random.Range(3f, 4.5f));
         }
     }
 

@@ -7,6 +7,7 @@ public class CameraMovement : MonoBehaviour
     public float delay;
     public float timestamp;
     private bool dead;
+    private float dist;
     public String followOnLog;
 
     private void Start()
@@ -15,6 +16,7 @@ public class CameraMovement : MonoBehaviour
         delay = 3;
         timestamp = Time.realtimeSinceStartup + delay;
         followOnLog = "none";
+        dist = 22.36f;
     }
 
     // Update is called once per frame
@@ -23,16 +25,17 @@ public class CameraMovement : MonoBehaviour
         if (dead)
             enabled = false;
         if (Time.realtimeSinceStartup > timestamp)
-            transform.position += Vector3.right * Time.deltaTime * 2f;
+            transform.position += Vector3.right * Time.deltaTime * 2f * dist/15f;
         if (followOnLog == "left")
             transform.position += Vector3.back * Time.deltaTime * 2f;
         else if (followOnLog == "right")
             transform.position += Vector3.forward * Time.deltaTime * 2f;
     }
 
-    public void FollowPlayerForward()
+    public void FollowPlayerForward(float dist)
     {
-        transform.position += Vector3.left * 0.3f;
+        this.dist = dist;
+        transform.position += Vector3.left;
         restorePosition = transform.position;
     }
 

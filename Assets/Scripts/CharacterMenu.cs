@@ -2,8 +2,6 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.IO;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 public class CharacterMenu : MonoBehaviour
 {
@@ -19,11 +17,14 @@ public class CharacterMenu : MonoBehaviour
             charactersDropDown.value = JsonUtility.FromJson<SelectedCharacter>(selectedCharString).id;
         }
         else
+        {
             charactersDropDown.value = 0;
-        if (!File.Exists(Application.persistentDataPath + "/characters.json"))
+            SetCharacter(0);
+        }
+        /*if (!File.Exists(Application.persistentDataPath + "/characters.json"))
         {
             
-        }
+        }*/
     }
 
     public void SetCharacter(int idIndex)

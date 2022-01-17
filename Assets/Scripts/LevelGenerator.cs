@@ -17,9 +17,9 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         currentTerrainList = new List<GameObject>();
-        currentPos = new Vector3(-12, 0, 0);
+        currentPos = new Vector3(-30, 0, 0);
         generateWater = false;
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 34; i++)
         {
             GenerateGrassOnly();
         }
@@ -41,7 +41,7 @@ public class LevelGenerator : MonoBehaviour
             currentPos.y = -0.4f;
         for (int i = 0; i < terrainLoop; i++)
         {
-            if (currentTerrain == 2 && generateWater && Random.Range(0, 4) == 0) //(0,4)
+            if (currentTerrain == 2 && generateWater && Random.Range(0, 15) == 0)
                 currentTerrain = 3;
             currentTerrainObject = Instantiate(levelObjects[currentTerrain], currentPos, Quaternion.identity);
             currentTerrainList.Add(currentTerrainObject);
