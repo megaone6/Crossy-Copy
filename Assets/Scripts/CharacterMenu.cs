@@ -17,28 +17,7 @@ public class CharacterMenu : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
-        if (File.Exists(Application.persistentDataPath + "/selectedCharacter.json"))
-        {
-            string selectedCharString = File.ReadAllText(Application.persistentDataPath + "/selectedCharacter.json");
-            charactersDropDown.value = JsonUtility.FromJson<SelectedCharacter>(selectedCharString).id;
-        }
-        else
-        {
-            charactersDropDown.value = 0;
-            SetCharacter(0);
-        }
-        if (!File.Exists(Application.persistentDataPath + "/unlockedCharacters.json"))
-        {
-            unlockedCharacters = new UnlockedCharacters { unlocked = new List<int> { 1, 0, 0, 0 } };
-            json = JsonUtility.ToJson(unlockedCharacters);
-            File.WriteAllText(Application.persistentDataPath + "/unlockedCharacters.json", json);
-        }
-        else
-        {
-            string unlockedCharactersString = File.ReadAllText(Application.persistentDataPath + "/unlockedCharacters.json");
-            unlockedCharacters = JsonUtility.FromJson<UnlockedCharacters>(unlockedCharactersString);
-        }
+        Invoke("StartupSetup", 0.01f);
     }
 
     public void SetCharacter(int idIndex)
@@ -77,6 +56,32 @@ public class CharacterMenu : MonoBehaviour
             UpdateText();
             json = JsonUtility.ToJson(mainMenu.coinObject);
             File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+        }
+    }
+
+    private void StartupSetup()
+    {
+        gameObject.SetActive(false);
+        if (!File.Exists(Application.persistentDataPath + "/unlockedCharacters.json"))
+        {
+            unlockedCharacters = new UnlockedCharacters { unlocked = new List<int> { 1, 0, 0, 0 } };
+            json = JsonUtility.ToJson(unlockedCharacters);
+            File.WriteAllText(Application.persistentDataPath + "/unlockedCharacters.json", json);
+        }
+        else
+        {
+            string unlockedCharactersString = File.ReadAllText(Application.persistentDataPath + "/unlockedCharacters.json");
+            unlockedCharacters = JsonUtility.FromJson<UnlockedCharacters>(unlockedCharactersString);
+        }
+        if (File.Exists(Application.persistentDataPath + "/selectedCharacter.json"))
+        {
+            string selectedCharString = File.ReadAllText(Application.persistentDataPath + "/selectedCharacter.json");
+            charactersDropDown.value = JsonUtility.FromJson<SelectedCharacter>(selectedCharString).id;
+        }
+        else
+        {
+            charactersDropDown.value = 0;
+            SetCharacter(0);
         }
     }
 
