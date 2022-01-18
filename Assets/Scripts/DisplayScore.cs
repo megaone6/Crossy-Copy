@@ -4,12 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class DisplayScore : MonoBehaviour
 {
-    private TMPro.TextMeshProUGUI txt;
-    // Start is called before the first frame update
-    void Start()
-    {
-        txt = gameObject.GetComponent<TMPro.TextMeshProUGUI>();
-    }
+    [SerializeField] private TMPro.TextMeshProUGUI txt;
 
     public void UpdateScore(int newScore)
     {

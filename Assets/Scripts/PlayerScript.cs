@@ -42,7 +42,6 @@ public class PlayerScript : MonoBehaviour
 		exitLog = false;
 		loadedObject = loadCoins();
 		coins = loadedObject.coinAmount;
-		Debug.Log(Math.Abs(camMove.transform.position.x - transform.position.x));
 	}
 
     // Update is called once per frame
@@ -64,13 +63,13 @@ public class PlayerScript : MonoBehaviour
         {
 			MovePlayer("hor", -1);
 			direction = 0;
-			camMove.FollowPlayerRight();
+			camMove.FollowPlayerRight(Math.Abs(camMove.transform.position.x - transform.position.x));
 		}
 		if (Input.GetKeyDown(KeyCode.A))
 		{
 			MovePlayer("hor", 1);
 			direction = 1;
-			camMove.FollowPlayerLeft();
+			camMove.FollowPlayerLeft(Math.Abs(camMove.transform.position.x - transform.position.x));
 		}
 		if (Input.GetKeyDown(KeyCode.W))
 		{
@@ -119,13 +118,13 @@ public class PlayerScript : MonoBehaviour
 					if (swipe.x > 0)
                     {
 						MovePlayer("hor", -1);
-						camMove.FollowPlayerRight();
+						camMove.FollowPlayerRight(Math.Abs(camMove.transform.position.x - transform.position.x));
 						direction = 0;
 					}
 					else
                     {
 						MovePlayer("hor", 1);
-						camMove.FollowPlayerLeft();
+						camMove.FollowPlayerLeft(Math.Abs(camMove.transform.position.x - transform.position.x));
 						direction = 1;
 					}
 				}
@@ -163,9 +162,9 @@ public class PlayerScript : MonoBehaviour
 		if (collision.gameObject.name.Contains("Tree"))
         {
 			if (direction == 0)
-				camMove.FollowPlayerLeft();
+				camMove.FollowPlayerLeft(Math.Abs(camMove.transform.position.x - transform.position.x));
 			else if (direction == 1)
-				camMove.FollowPlayerRight();
+				camMove.FollowPlayerRight(Math.Abs(camMove.transform.position.x - transform.position.x));
 			rb.MovePosition(posTmp);
 		}
 		if (collision.collider.GetComponent<KillOnContact>() != null)
@@ -228,7 +227,6 @@ public class PlayerScript : MonoBehaviour
 				camMove.followOnLog = "none";
 			}
 		}
-		Debug.Log(Math.Abs(camMove.transform.position.x - transform.position.x));
 		animator.SetTrigger("move");
 	}
 

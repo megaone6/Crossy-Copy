@@ -5,8 +5,8 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    private int coins;
-    private SaveCoinObject loadObject;
+    public int coins;
+    public SaveCoinObject coinObject;
     [SerializeField] private TextMeshProUGUI coinText;
     private void Start()
     {
@@ -14,16 +14,16 @@ public class MainMenu : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/save.json"))
         {
             string saveString = File.ReadAllText(Application.persistentDataPath + "/save.json");
-            loadObject = JsonUtility.FromJson<SaveCoinObject>(saveString);
+            coinObject = JsonUtility.FromJson<SaveCoinObject>(saveString);
         }
         else
         {
-            loadObject = new SaveCoinObject
+            coinObject = new SaveCoinObject
             {
                 coinAmount = 0
             };
         }
-        coins = loadObject.coinAmount;
+        coins = coinObject.coinAmount;
         coinText.text = "Coins: " + coins;
     }
 
@@ -37,8 +37,7 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
-    private class SaveCoinObject
+    public class SaveCoinObject
     {
         public int coinAmount;
     }

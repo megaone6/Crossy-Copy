@@ -27,9 +27,9 @@ public class CameraMovement : MonoBehaviour
         if (Time.realtimeSinceStartup > timestamp)
             transform.position += Vector3.right * Time.deltaTime * 2f * dist/15f;
         if (followOnLog == "left")
-            transform.position += Vector3.back * Time.deltaTime * 2f;
+            transform.position += Vector3.back * Time.deltaTime * 1.2f;
         else if (followOnLog == "right")
-            transform.position += Vector3.forward * Time.deltaTime * 2f;
+            transform.position += Vector3.forward * Time.deltaTime * 1.2f;
     }
 
     public void FollowPlayerForward(float dist)
@@ -39,14 +39,16 @@ public class CameraMovement : MonoBehaviour
         restorePosition = transform.position;
     }
 
-    public void FollowPlayerLeft()
+    public void FollowPlayerLeft(float dist)
     {
+        this.dist = dist;
         transform.position += Vector3.forward;
         restorePosition = transform.position;
     }
 
-    public void FollowPlayerRight()
+    public void FollowPlayerRight(float dist)
     {
+        this.dist = dist;
         transform.position += Vector3.back;
         restorePosition = transform.position;
     }

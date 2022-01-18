@@ -18,7 +18,7 @@ public class MovingObjectSpawner: MonoBehaviour
     {
         currentCarSpeed = 5f;
         currentTruckSpeed = 3.15f;
-        currentLogSpeed = 3f;
+        currentLogSpeed = 9f;
         leftOrRight = Random.Range(0, 2);
         StartCoroutine(SpawnVehicle());
         if (!waterOrRoad)
@@ -33,7 +33,7 @@ public class MovingObjectSpawner: MonoBehaviour
             if (!waterOrRoad)
                 yield return new WaitForSeconds(Random.Range(6f, 9.5f));
             else
-                yield return new WaitForSeconds(Random.Range(2.4f, 3.6f));
+                yield return new WaitForSeconds(Random.Range(1.5f, 2.2f));
             GameObject movingObj = movingObjs[leftOrRight];
             if (leftOrRight == 0)
             {

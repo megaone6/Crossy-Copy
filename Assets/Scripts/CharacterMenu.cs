@@ -2,11 +2,18 @@ using UnityEngine;
 using TMPro;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 public class CharacterMenu : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown charactersDropDown;
+    [SerializeField] private MainMenu mainMenu;
+    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private Popup notEnoughMoney;
+    [SerializeField] private Canvas canvas;
     private SelectedCharacter savedCharacter;
+    private UnlockedCharacters unlockedCharacters;
+    private string json;
 
     private void Start()
     {
@@ -21,24 +28,61 @@ public class CharacterMenu : MonoBehaviour
             charactersDropDown.value = 0;
             SetCharacter(0);
         }
-        /*if (!File.Exists(Application.persistentDataPath + "/characters.json"))
+        if (!File.Exists(Application.persistentDataPath + "/unlockedCharacters.json"))
         {
-            
-        }*/
+            unlockedCharacters = new UnlockedCharacters { unlocked = new List<int> { 1, 0, 0, 0 } };
+            json = JsonUtility.ToJson(unlockedCharacters);
+            File.WriteAllText(Application.persistentDataPath + "/unlockedCharacters.json", json);
+        }
+        else
+        {
+            string unlockedCharactersString = File.ReadAllText(Application.persistentDataPath + "/unlockedCharacters.json");
+            unlockedCharacters = JsonUtility.FromJson<UnlockedCharacters>(unlockedCharactersString);
+        }
     }
 
     public void SetCharacter(int idIndex)
     {
         String tmpName = charactersDropDown.options[charactersDropDown.value].text;
         int removeFrom = tmpName.IndexOf("(");
+        int priceLength;
+        if (idIndex == 0)
+            priceLength = 1;
+        else
+            priceLength = 2;
+        int tmpCost = int.Parse(tmpName.Substring(removeFrom + 1, priceLength));
+        if (tmpCost > mainMenu.coinObject.coinAmount && unlockedCharacters.unlocked[idIndex] == 0)
+        {
+            charactersDropDown.value = 0;
+            notEnoughMoney.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+            return;
+        }
         savedCharacter = new SelectedCharacter
         {
             id = idIndex,
             name = tmpName.Substring(0, removeFrom - 1),
-            //cost = int.Parse(tmpName.Substring(removeFrom + 1, 2)),
+            cost = tmpCost,
         };
-        string json = JsonUtility.ToJson(savedCharacter);
+        json = JsonUtility.ToJson(savedCharacter);
         File.WriteAllText(Application.persistentDataPath + "/selectedCharacter.json", json);
+        if (unlockedCharacters.unlocked[idIndex] == 0)
+        {
+            unlockedCharacters.unlocked[idIndex] = 1;
+            json = JsonUtility.ToJson(unlockedCharacters);
+            File.WriteAllText(Application.persistentDataPath + "/unlockedCharacters.json", json);
+            int newAmount = mainMenu.coins - tmpCost;
+            mainMenu.coins = newAmount;
+            mainMenu.coinObject.coinAmount = newAmount;
+            UpdateText();
+            json = JsonUtility.ToJson(mainMenu.coinObject);
+            File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+        }
+    }
+
+    private void UpdateText()
+    {
+        coinText.text = "Coins: " + mainMenu.coinObject.coinAmount.ToString();
     }
 
     private class SelectedCharacter
@@ -48,11 +92,8 @@ public class CharacterMenu : MonoBehaviour
         public int cost;
     }
 
-    private class Character
+    private class UnlockedCharacters
     {
-        public int id;
-        public String name;
-        //public int cost;
-        //public int unlocked;
+        public List<int> unlocked;
     }
 }

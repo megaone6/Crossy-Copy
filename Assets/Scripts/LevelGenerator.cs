@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    private readonly List<int> maxConsecutiveTerrain = new List<int> { 6, 8, 3, 3, 6 };
+
     public Vector3 currentPos;
     private Vector3 obstaclePos;
     private List<GameObject> currentTerrainList;
@@ -36,12 +38,12 @@ public class LevelGenerator : MonoBehaviour
         GameObject currentTerrainObject;
         while (currentTerrain == previousTerrain || currentTerrain == 3 || (!generateWater && currentTerrain == 2))
             currentTerrain = Random.Range(0, levelObjects.Count);
-        int terrainLoop = Random.Range(1, 6);
+        int terrainLoop = Random.Range(1, maxConsecutiveTerrain[currentTerrain]);
         if (currentTerrain == 2 && currentPos.y == 0)
             currentPos.y = -0.4f;
         for (int i = 0; i < terrainLoop; i++)
         {
-            if (currentTerrain == 2 && generateWater && Random.Range(0, 15) == 0)
+            if (currentTerrain == 2 && generateWater && Random.Range(0, 3) == 0)
                 currentTerrain = 3;
             currentTerrainObject = Instantiate(levelObjects[currentTerrain], currentPos, Quaternion.identity);
             currentTerrainList.Add(currentTerrainObject);
